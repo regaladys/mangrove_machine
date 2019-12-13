@@ -1,9 +1,9 @@
-// Version 12.13.b
-// min height = 1 - 3.5 minutes rest
-// max height = 1 - 25 minutes rest
+// Version 12.13.c
+// min height = 30 second rest
+// max height = 30 second rest
 
-// Exhibition version for Gallery B.
-// - single mangrove in the dark gallery.
+// Test code for all boxes
+// upload, open serial monitor, test connections and switches
 
 #define PINMAIN 2
 #define PINUP 3
@@ -19,8 +19,8 @@ long timeDebounceRef = 0;   // time of switch, reference for rest time
 
 long delayDebounce = 100; //
 
-long restUp = 60000;      // 1 minutes min rest before going UP, min height
-long restDown = 60000;    // 1 minutes min rest before going DOWN, max height
+long restUp = 30000;      // 1 minutes min rest before going UP, min height
+long restDown = 30000;    // 1 minutes min rest before going DOWN, max height
 long randUp;              // randomize rest time before going UP
 long randDown;            // randomize rest time before going DOWN
 //long moveUp = 10000;    // 10 second maximum motor movement UP
@@ -52,7 +52,7 @@ void loop()
     if((millis() - timeDebounceMain) > delayDebounce)   // --- if PINMAIN is active after a long time
     { timeDebounceMain = millis();                      // --- time of PINMAIN activation = current time stamp
       mainState = HIGH;                                 // --- main state is set as active, routine begins.
-      Serial.println("BEGIN Single Mangrove");
+      Serial.println("BEGIN Test");
     }
   } // --- end PINMAIN monitor
   
@@ -69,8 +69,8 @@ void loop()
         if (debounceRefStateUP == LOW)                  // --- RefStateUP == LOW, get a reference time
         { timeDebounceRef = millis();
           Serial.println("UP UP UP");
-          randUp = restUp + random(0,5)*30000;          // --- 1 - 3.5 minutes
-          Serial.println(randUp);
+          //randUp = restUp + random(0,4)*60000;          // --- 1 - 5 minutes
+          //Serial.println(randUp);
         }
        }
      }
@@ -84,8 +84,8 @@ void loop()
         if (debounceRefStateDOWN == LOW)
         { timeDebounceRef = millis();
           Serial.println("DOWN DOWN DOWN");
-          randDown = restDown + random(0,24)*60000;      // --- 1 - 25 minutes
-          Serial.println(randDown);
+          //randDown = restDown + random(0,14)*60000;      // --- 1 - 15 minutes
+          //Serial.println(randDown);
         }
       }
      }
@@ -93,7 +93,7 @@ void loop()
       
      if (upState == HIGH && downState == LOW)
       
-     { if (millis() - timeDebounceRef < randUp)
+     { if (millis() - timeDebounceRef < restUp)
        { debounceRefStateUP = HIGH;
          debounceRefStateDOWN = LOW;
          motorOff();
@@ -106,7 +106,7 @@ void loop()
 
      if (upState == LOW && downState == HIGH)
         
-     { if (millis() - timeDebounceRef < randDown)
+     { if (millis() - timeDebounceRef < restDown)
        { debounceRefStateUP = LOW;
          debounceRefStateDOWN = HIGH;
          motorOff();

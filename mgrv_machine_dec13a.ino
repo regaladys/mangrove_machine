@@ -52,7 +52,7 @@ void loop()
     if((millis() - timeDebounceMain) > delayDebounce)   // --- if PINMAIN is active after a long time
     { timeDebounceMain = millis();                      // --- time of PINMAIN activation = current time stamp
       mainState = HIGH;                                 // --- main state is set as active, routine begins.
-      //Serial.println("BEGIN");
+      Serial.println("BEGIN 22 Mangroves");
     }
   } // --- end PINMAIN monitor
   
